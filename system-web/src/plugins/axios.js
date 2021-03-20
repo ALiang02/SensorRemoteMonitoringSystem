@@ -12,6 +12,15 @@ let config = {
   // baseURL: process.env.baseURL || process.env.apiUrl || ""
   // timeout: 60 * 1000, // Timeout
   // withCredentials: true, // Check cross-site Access-Control
+  method: "post",
+  baseURL: "http://127.0.0.1:8000/",
+  timeout: 10000,
+  transformRequest: data => {
+    let transData = new URLSearchParams(); 
+    transData.append("data", JSON.stringify(data));  //将data对象转换成JSON字符串传输
+    // transData.append("verification", sessionStorage.getItem("verification"));//安全认证
+    return transData;
+}
 };
 
 const _axios = axios.create(config);

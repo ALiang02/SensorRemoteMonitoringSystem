@@ -13,9 +13,26 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import json
+
 from django.contrib import admin
+from django.http import HttpResponse, JsonResponse
 from django.urls import path
+
+
+def login(req):
+    print('--------------------------')
+    req_data = json.loads(req.POST.get('data'))
+    print(req_data['account'])
+    print(req_data['password'])
+    rep_data = {
+        'a': 123,
+        'b': 321,
+    }
+    return JsonResponse(rep_data)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('login', login)
 ]

@@ -40,6 +40,21 @@ export default {
       password: "",
     };
   },
+
+  methods: {
+    submit() {
+      console.log("发送");
+      this.$axios({
+        url: "/login",
+        data: {
+          account: this.account,
+          password: this.password,
+        },
+      }).then((data) => {
+        console.log(data);
+      });
+    },
+  },
 };
 </script>
 
