@@ -9,25 +9,24 @@ export default {
   data() {
     return {
       //传感器节点
-      node: {
+      nodeData: {
         //传感器识别ID
-        id: 1,
+        node_id: 1,
         //x,y轴位置，模拟GPS定位数据
-        postion_x: 1,
-        postion_y: 1,
+        GPS_data: {
+          postion_x: 1,
+          postion_y: 1,
+        },
         //环境数据,后续可以补充
         environment_data: {
-          time: "2021-04-09-16-00", //环境数据更新时间
           temperature: 22, //温度，单位℃
           humidity: 30, //湿度，单位%
         },
-        //总环境数据，传感器收集到的历史数据
-        environment_datas: [],
-        //相邻节点,即该节点能够收集到这些节点发送的数据
-        neighborhood_nodes: [],
+
+        time: "2021-04-09-16-00", //数据更新时间
       },
       //总节点
-      nodes: [],
+      nodeDatas: [],
     };
   },
   mounted() {
