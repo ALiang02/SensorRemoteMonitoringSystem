@@ -139,7 +139,7 @@ export default {
     // 绘制图表
     myChart.setOption({
       title: {
-        text: "ECharts 入门示例",
+        text: "温度 湿度 数据图",
         left: "center",
       },
       dataset: {

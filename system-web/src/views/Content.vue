@@ -14,8 +14,8 @@ export default {
         node_id: 1,
         //x,y轴位置，模拟GPS定位数据
         GPS_data: {
-          postion_x: 1,
-          postion_y: 1,
+          x: 1,
+          y: 1,
         },
         //环境数据,后续可以补充
         environment_data: {
@@ -27,110 +27,50 @@ export default {
       },
       //总节点
       nodeDatas: [],
+      nodes: [],
     };
   },
   mounted() {
-    var map = document.getElementById("map");
-    var node_map = map.getContext("2d");
-    node_map.lineWidth = 1;
-    node_map.strokeStyle = "black";
-    // node_map.fillStyle = "#E6A23C";
-    // node_map.fillRect(0, 0, 1600, 900);
-    node_map.setLineDash([1, 4]); // [实线长度, 间隙长度]
-    node_map.lineDashOffset = -0;
-    // node_map.font = "16px sans-serif";
-    for (let i = 1; i < 16; i++) {
-      node_map.moveTo(i * 100, 0);
-      node_map.lineTo(i * 100, 900);
-
-      node_map.fillText(i, i * 100, 900);
-    }
-    for (let j = 1; j < 9; j++) {
-      node_map.moveTo(0, j * 100);
-      node_map.lineTo(1600, j * 100);
-      node_map.fillText(9 - j, 0, j * 100);
-    }
-
-    node_map.stroke();
+    this.mapDraw();
     this.getTestData();
-    this.nodeDraw();
+
+    // this.nodeDraw();
   },
 
   methods: {
+    mapDraw() {
+      var map = document.getElementById("map");
+      var node_map = map.getContext("2d");
+      node_map.lineWidth = 1;
+      node_map.strokeStyle = "black";
+      // node_map.fillStyle = "#E6A23C";
+      // node_map.fillRect(0, 0, 1600, 900);
+      node_map.setLineDash([1, 4]); // [实线长度, 间隙长度]
+      node_map.lineDashOffset = -0;
+      // node_map.font = "16px sans-serif";
+      for (let i = 1; i < 16; i++) {
+        node_map.moveTo(i * 100, 0);
+        node_map.lineTo(i * 100, 900);
+
+        node_map.fillText(i, i * 100, 900);
+      }
+      for (let j = 1; j < 9; j++) {
+        node_map.moveTo(0, j * 100);
+        node_map.lineTo(1600, j * 100);
+        node_map.fillText(9 - j, 0, j * 100);
+      }
+
+      node_map.stroke();
+    },
     getTestData() {
-      this.nodes = [
-        {
-          id: 1,
-          postion_x: 1,
-          postion_y: 1,
-          environment_data: {
-            temperature: 22,
-            humidity: 30,
-          },
-          neighborhood_nodes: [3, 4],
-          color: "#000000",
-        },
-
-        {
-          id: 2,
-          postion_x: 2,
-          postion_y: 8,
-          environment_data: {
-            temperature: 22,
-            humidity: 30,
-          },
-          neighborhood_nodes: [1],
-          color: "#27a7ce",
-        },
-
-        {
-          id: 3,
-          postion_x: 7,
-          postion_y: 3,
-          environment_data: {
-            temperature: 22,
-            humidity: 30,
-          },
-          neighborhood_nodes: [1, 6],
-          color: "#7df782",
-        },
-
-        {
-          id: 4,
-          postion_x: 8,
-          postion_y: 5,
-          environment_data: {
-            temperature: 22,
-            humidity: 30,
-          },
-          neighborhood_nodes: [2],
-          color: "#409EFF",
-        },
-
-        {
-          id: 5,
-          postion_x: 13,
-          postion_y: 1,
-          environment_data: {
-            temperature: 22,
-            humidity: 30,
-          },
-          neighborhood_nodes: [3],
-          color: "#f77dd3",
-        },
-
-        {
-          id: 6,
-          postion_x: 4,
-          postion_y: 8,
-          environment_data: {
-            temperature: 22,
-            humidity: 30,
-          },
-          neighborhood_nodes: [4],
-          color: "#ff3d46",
-        },
-      ];
+      this.$axios({
+        url: "/get_sensor_list",
+      }).then(({ data }) => {
+        console.log(data);
+        this.nodes = data.sensor_list;
+        console.log(this.nodes);
+        this.nodeDraw();
+      });
     },
     drawArrow(ctx, fromX, fromY, toX, toY, color, theta, headlen, width) {
       //       ctx：Canvas绘图环境
@@ -140,6 +80,7 @@ export default {
       // headlen：三角斜边长度
       // width：箭头线宽度
       // color：箭头颜色
+      color = "#000000";
       theta = 30;
       headlen = 20;
       width = 1;
@@ -181,20 +122,18 @@ export default {
       ctx.restore();
     },
     nodeDraw() {
+      console.log(this.nodes);
+      console.log("123");
       var map = document.getElementById("map");
       var node_map = map.getContext("2d");
 
       for (let node of this.nodes) {
         node_map.setLineDash([1, 0]); // [实线长度, 间隙长度]
         node_map.beginPath();
-        node_map.arc(
-          node.postion_x * 100,
-          (9 - node.postion_y) * 100,
-          30,
-          0,
-          Math.PI * 2,
-          false
-        );
+
+        let [x1, y1] = node.gps.split(",");
+
+        node_map.arc(x1 * 100, (9 - y1) * 100, 30, 0, Math.PI * 2, false);
 
         // node_map.fillStyle = `rgba(${parseInt(
         //   node.color.substring(1, 3),
@@ -203,28 +142,19 @@ export default {
         //   node.color.substring(1, 3),
         //   16
         // )},1)`;
-        node_map.strokeStyle = node.color;
+        // node_map.strokeStyle = node.color;
         node_map.stroke();
-        node_map.fillText(
-          node.environment_data.temperature +
-            "℃" +
-            " " +
-            node.environment_data.humidity +
-            "%",
-          node.postion_x * 100 - 15,
-          (9 - node.postion_y) * 100
-        );
         for (let node_id of node.neighborhood_nodes) {
-          for (let { id, postion_x, postion_y, color } of this.nodes) {
-            if (node_id == id) {
+          for (let { sensor_id, gps } of this.nodes) {
+            if (node_id == sensor_id) {
+              let [x2, y2] = gps.split(",");
               this.drawArrow(
                 node_map,
 
-                postion_x * 100,
-                (9 - postion_y) * 100,
-                node.postion_x * 100,
-                (9 - node.postion_y) * 100,
-                color
+                x2 * 100,
+                (9 - y2) * 100,
+                x1 * 100,
+                (9 - y1) * 100
               );
             }
           }

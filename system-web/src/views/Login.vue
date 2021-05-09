@@ -1,27 +1,26 @@
 <template>
   <div class="login">
-    <div class="content">
-      <div class="content_input">
-        <div class="title">
-          <p>管理员登录</p>
-        </div>
-        <el-input v-model="account" clearable placeholder="用户名"></el-input>
-        <el-input
-          v-model="password"
-          clearable
-          show-password
-          placeholder="密码"
-        ></el-input>
+    <div class="login_input">
+      <div class="title">
+        <p>管理员登录</p>
+      </div>
+      <el-input v-model="account" clearable placeholder="用户名"></el-input>
+      <el-input
+        v-model="password"
+        clearable
+        show-password
+        placeholder="密码"
+      ></el-input>
 
-        <div class="content_button">
-          <el-button type="primary" @click="submit">登录</el-button>
-        </div>
+      <div class="login_button">
+        <el-button type="primary" @click="submit">登录</el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { Message } from "element-ui";
 export default {
   mounted() {
     let x = document.querySelector(".login");
@@ -50,8 +49,15 @@ export default {
           account: this.account,
           password: this.password,
         },
-      }).then((data) => {
+      }).then(({ data }) => {
         console.log(data);
+        if (data.flag) {
+          Message.success(data.message);
+          sessionStorage.setItem("verification", data.verification);
+          this.$router.push({ path: "/content" });
+        } else {
+          Message.error(data.message);
+        }
       });
     },
   },
@@ -66,7 +72,7 @@ export default {
   margin: 0;
 }
 
-.content {
+.login {
   width: 500px;
   height: 400px;
   box-sizing: border-box;
@@ -175,7 +181,7 @@ export default {
   }
 }
 
-.content_input {
+.login_input {
   width: 300px;
   position: absolute;
   top: 50%;
@@ -183,7 +189,7 @@ export default {
   transform: translate(-50%, -50%);
 }
 
-.content_button {
+.login_button {
   margin-top: 10px;
 }
 
