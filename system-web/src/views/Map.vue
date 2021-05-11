@@ -1,32 +1,13 @@
 <template>
-  <div class="test">
+  <div class="map">
     <div
       :span="8"
       id="chart"
       style="width: 1600px; height: 900px"
       @contextmenu.prevent
     ></div>
-
-    <h2>传感器状态</h2>
-    <el-table :data="nodes" border highlight-current-row>
-      <el-table-column fixed prop="sensor_id" label="编号"> </el-table-column>
-      <el-table-column prop="ip" label="ip地址"> </el-table-column>
-      <el-table-column prop="gps" label="gps位置"> </el-table-column>
-      <el-table-column prop="energy" label="剩余能量"> </el-table-column>
-      <el-table-column prop="data_types" label="正在收集的环境数据">
-      </el-table-column>
-      <el-table-column fixed="right" label="操作">
-        <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="text" size="small"
-            >查看</el-button
-          >
-          <el-button type="text" size="small">编辑</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
   </div>
 </template>
-
 <script>
 import * as echarts from "echarts";
 
@@ -36,7 +17,6 @@ export default {
       nodes: [],
       node_datas: [],
       node_links: [],
-      tableData: [],
     };
   },
   methods: {
@@ -47,7 +27,6 @@ export default {
         console.log(data);
         this.nodes = data.sensor_list;
         console.log(this.nodes);
-        // this.nodeDraw();
         for (let i = 0; i < this.nodes.length; i++) {
           let [x, y] = this.nodes[i].gps.split(",");
           this.nodes[i].pos_x = parseInt(x);
@@ -57,7 +36,6 @@ export default {
             sensor_id: this.nodes[i].sensor_id,
             x: parseInt(x),
             y: 9 - parseInt(y),
-            // itemStyle: { color: "#00ff00" },
           };
           for (let j = 0; j < this.nodes[i].neighborhood_nodes.length; j++) {
             this.node_links.push({
@@ -67,12 +45,9 @@ export default {
           }
           this.myDraw();
         }
-        // console.log(this.nodes);
-        // this.myDraw();
       });
     },
     onContextmenu(event) {
-      // console.log(event);
       this.$contextmenu({
         items: [
           {
@@ -87,36 +62,6 @@ export default {
               console.log("查看传感器收集的数据");
             },
           },
-          // { label: "前进(F)", disabled: true },
-          // { label: "重新加载(R)", divided: true, icon: "el-icon-refresh" },
-          // { label: "另存为(A)..." },
-          // { label: "打印(P)...", icon: "el-icon-printer" },
-          // { label: "投射(C)...", divided: true },
-          // {
-          //   label: "使用网页翻译(T)",
-          //   divided: true,
-          //   minWidth: 0,
-          //   children: [
-          //     { label: "翻译成简体中文" },
-          //     { label: "翻译成繁体中文" },
-          //   ],
-          // },
-          // {
-          //   label: "截取网页(R)",
-          //   minWidth: 0,
-          //   children: [
-          //     {
-          //       label: "截取可视化区域",
-          //       onClick: () => {
-          //         this.message = "截取可视化区域";
-          //         console.log("截取可视化区域");
-          //       },
-          //     },
-          //     { label: "截取全屏" },
-          //   ],
-          // },
-          // { label: "查看网页源代码(V)", icon: "el-icon-view" },
-          // { label: "检查(N)" },
         ],
         event,
         //x: event.clientX,
@@ -130,8 +75,6 @@ export default {
 
     myDraw() {
       var myChart = echarts.init(document.getElementById("chart"));
-      // myChart.on("contextmenu", this.onContextmenu);
-      // 控制台打印数据的名称
       let that = this;
       myChart.on("contextmenu", function (params) {
         // console.log(params);
