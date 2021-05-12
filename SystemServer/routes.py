@@ -30,10 +30,11 @@ def show_subpath(subpath):
     # show the subpath after /path/
     return 'Subpath %s' % subpath
 """
+import time
+from datetime import datetime
 import os
 import sqlite3
-import time
-
+import random
 from flask import Flask, request, json
 from flask_cors import CORS
 
@@ -193,15 +194,17 @@ def get_humidity():
     print(results[0][0])
     for result in results:
         humidity_data["sensors"].append(result[0])
-        sql = "SELECT humidity FROM environment WHERE sensor_id = '%s' AND year = '%s' AND month = '%s' AND date = '%s'" % (
-            result[0], year, month, date)
+        sql = "SELECT * FROM environment WHERE sensor_id = '%s' " % result[0]
         results2 = execute_sql(sql, "select")
         x = []
         for result2 in results2:
-            x.append(result2[0])
-        humidity_data["values"].append(x)
+            result2 = list(result2)
+            y = str(result2[4]) + "/" + str(result2[5]) + "/" + str(result2[6]) + " " + str(result2[7])+":00:00"
 
-    print(humidity_data)
+            x.append([y, result2[2]])
+        humidity_data["values"].append(x)
+    print
+
     return {"humidity_data": humidity_data}
 
 
@@ -222,13 +225,99 @@ def get_temperature():
     print(results[0][0])
     for result in results:
         temperature_data["sensors"].append(result[0])
-        sql = "SELECT temperature FROM environment WHERE sensor_id = '%s' AND year = '%s' AND month = '%s' AND date = " \
-              "'%s'" % (result[0], year, month, date)
+        sql = "SELECT * FROM environment WHERE sensor_id = '%s' " % result[0]
         results2 = execute_sql(sql, "select")
         x = []
         for result2 in results2:
-            x.append(result2[0])
-        temperature_data["values"].append(x)
+            result2 = list(result2)
+            y = str(result2[4]) + "/" + str(result2[5]) + "/" + str(result2[6]) + " " + str(result2[7])+":00:00"
 
-    print(temperature_data)
+            x.append([y, result2[2]])
+        temperature_data["values"].append(x)
+    print
+
     return {"temperature_data": temperature_data}
+
+# @app.route("/qwe", methods=["GET"])
+# def qwe():
+#     hour6 = 6 * 3600
+#     base = datetime(2021, 1, 1).timestamp()
+#     for i in range(500):
+#         base += hour6
+#         now = datetime.fromtimestamp(base)
+# 
+#         sql = (
+#             "INSERT INTO environment (sensor_id,temperature,year, month, date, hour) VALUES ('%s','%s','%s','%s',"
+#             "'%s','%s') " % (
+#                 1, random.randint(0, 35), now.strftime('%Y'), now.strftime('%m'), now.strftime('%d'),
+#                 now.strftime('%H'))
+#         )
+#         execute_sql(sql, "insert")
+# 
+#     base = datetime(2021, 1, 1).timestamp()
+#     for i in range(500):
+#         base += hour6
+#         now = datetime.fromtimestamp(base)
+# 
+#         sql = (
+#             "INSERT INTO environment (sensor_id,temperature,year, month, date, hour) VALUES ('%s','%s','%s','%s',"
+#             "'%s','%s') " % (
+#                 2, random.randint(0, 35), now.strftime('%Y'), now.strftime('%m'), now.strftime('%d'),
+#                 now.strftime('%H'))
+#         )
+#         execute_sql(sql, "insert")
+# 
+#     base = datetime(2021, 1, 1).timestamp()
+#     for i in range(500):
+#         base += hour6
+#         now = datetime.fromtimestamp(base)
+# 
+#         sql = (
+#             "INSERT INTO environment (sensor_id,humidity,year, month, date, hour) VALUES ('%s','%s','%s','%s','%s',"
+#             "'%s') " % (
+#                 3, random.randint(0, 35), now.strftime('%Y'), now.strftime('%m'), now.strftime('%d'),
+#                 now.strftime('%H'))
+#         )
+#         execute_sql(sql, "insert")
+# 
+#     base = datetime(2021, 1, 1).timestamp()
+#     for i in range(500):
+#         base += hour6
+#         now = datetime.fromtimestamp(base)
+# 
+#         sql = (
+#             "INSERT INTO environment (sensor_id,humidity,year, month, date, hour) VALUES ('%s','%s','%s','%s','%s',"
+#             "'%s') " % (
+#                 4, random.randint(0, 35), now.strftime('%Y'), now.strftime('%m'), now.strftime('%d'),
+#                 now.strftime('%H'))
+#         )
+#         execute_sql(sql, "insert")
+# 
+#     base = datetime(2021, 1, 1).timestamp()
+#     for i in range(500):
+#         base += hour6
+#         now = datetime.fromtimestamp(base)
+# 
+#         sql = (
+#             "INSERT INTO environment (sensor_id,temperature,humidity,year, month, date, hour) VALUES ('%s','%s','%s',"
+#             "'%s','%s','%s','%s') " % (
+#                 5, random.randint(0, 35), random.randint(20, 35), now.strftime('%Y'), now.strftime('%m'),
+#                 now.strftime('%d'),
+#                 now.strftime('%H'))
+#         )
+#         execute_sql(sql, "insert")
+# 
+#     base = datetime(2021, 1, 1).timestamp()
+#     for i in range(500):
+#         base += hour6
+#         now = datetime.fromtimestamp(base)
+#         sql = (
+#             "INSERT INTO environment (sensor_id,temperature,humidity,year, month, date, hour) VALUES ('%s','%s','%s',"
+#             "'%s','%s','%s','%s') " % (
+#                 6, random.randint(0, 35), random.randint(20, 35), now.strftime('%Y'), now.strftime('%m'),
+#                 now.strftime('%d'),
+#                 now.strftime('%H'))
+#         )
+#         execute_sql(sql, "insert")
+# 
+#     return "123"

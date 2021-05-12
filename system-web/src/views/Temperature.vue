@@ -22,6 +22,10 @@ export default {
   },
   methods: {
     getNodes() {
+      let now = new Date(2021, 1, 1);
+      console.log(
+        [now.getFullYear(), now.getMonth() + 1, now.getDate()].join("/")
+      );
       this.$axios({
         url: "/get_temperature",
         data: {
@@ -46,6 +50,9 @@ export default {
         series_data[i] = {
           name: legend_data[i],
           type: "line",
+          smooth: true,
+          symbol: "none",
+          // areaStyle: {},
           data: this.temperature_data.values[i],
         };
       }
@@ -63,18 +70,31 @@ export default {
         },
 
         xAxis: {
-          type: "category",
+          type: "time",
           boundaryGap: false,
-          data: ["0:00", "6:00", "12:00", "18:00"],
         },
         yAxis: {
           type: "value",
+          boundaryGap: [0, "100%"],
+          min: 0,
+          max: 40,
           axisLabel: {
             formatter: function (value) {
               return value + "℃";
             },
           },
         },
+        dataZoom: [
+          {
+            type: "inside",
+            start: 99,
+            end: 100,
+          },
+          {
+            start: 0,
+            end: 100,
+          },
+        ],
         series: series_data,
       });
     },

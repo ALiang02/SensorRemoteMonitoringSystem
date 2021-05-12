@@ -1,180 +1,105 @@
 <template>
-  <div class="test">
-    <div
-      :span="8"
-      id="chart"
-      style="width: 1600px; height: 900px"
-      @contextmenu.prevent
-    ></div>
-
-    <h2>传感器状态</h2>
-    <el-table :data="nodes" border highlight-current-row>
-      <el-table-column fixed prop="sensor_id" label="编号"> </el-table-column>
-      <el-table-column prop="ip" label="ip地址"> </el-table-column>
-      <el-table-column prop="gps" label="gps位置"> </el-table-column>
-      <el-table-column prop="energy" label="剩余能量"> </el-table-column>
-      <el-table-column prop="data_types" label="正在收集的环境数据">
-      </el-table-column>
-      <el-table-column fixed="right" label="操作">
-        <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="text" size="small"
-            >查看</el-button
-          >
-          <el-button type="text" size="small">编辑</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+  <div class="temperature">
+    <div :span="8" id="temperature" style="width: 1200px; height: 900px" />
   </div>
 </template>
 
 <script>
 import * as echarts from "echarts";
+// import { Message, MessageBox } from "element-ui";
 
 export default {
   data() {
     return {
-      nodes: [],
-      node_datas: [],
-      node_links: [],
-      tableData: [],
+      year: 2021,
+      month: 5,
+      date: 12,
+      temperature_data: {
+        sensors: [],
+        values: [],
+      },
     };
   },
   methods: {
     getNodes() {
+      let now = new Date(2021, 1, 1);
+      console.log(
+        [now.getFullYear(), now.getMonth() + 1, now.getDate()].join("/")
+      );
       this.$axios({
-        url: "/get_sensor_list",
+        url: "/get_temperature",
+        data: {
+          year: this.year,
+          month: this.month,
+          date: this.date,
+        },
       }).then(({ data }) => {
-        console.log(data);
-        this.nodes = data.sensor_list;
-        console.log(this.nodes);
-        // this.nodeDraw();
-        for (let i = 0; i < this.nodes.length; i++) {
-          let [x, y] = this.nodes[i].gps.split(",");
-          this.nodes[i].pos_x = parseInt(x);
-          this.nodes[i].pos_y = parseInt(y);
-          this.node_datas[i] = {
-            name: "传感器" + this.nodes[i].sensor_id + "号",
-            sensor_id: this.nodes[i].sensor_id,
-            x: parseInt(x),
-            y: 9 - parseInt(y),
-            // itemStyle: { color: "#00ff00" },
-          };
-          for (let j = 0; j < this.nodes[i].neighborhood_nodes.length; j++) {
-            this.node_links.push({
-              source: "传感器" + this.nodes[i].neighborhood_nodes[j] + "号",
-              target: "传感器" + this.nodes[i].sensor_id + "号",
-            });
-          }
-          this.myDraw();
-        }
-        // console.log(this.nodes);
-        // this.myDraw();
+        console.log(data.temperature_data);
+        this.temperature_data = data.temperature_data;
+        this.table_draw();
       });
     },
-    onContextmenu(event) {
-      // console.log(event);
-      this.$contextmenu({
-        items: [
-          {
-            label: "查看传感器状态",
-            onClick: () => {
-              console.log("查看传感器状态");
-            },
-          },
-          {
-            label: "查看传感器收集的数据",
-            onClick: () => {
-              console.log("查看传感器收集的数据");
-            },
-          },
-          // { label: "前进(F)", disabled: true },
-          // { label: "重新加载(R)", divided: true, icon: "el-icon-refresh" },
-          // { label: "另存为(A)..." },
-          // { label: "打印(P)...", icon: "el-icon-printer" },
-          // { label: "投射(C)...", divided: true },
-          // {
-          //   label: "使用网页翻译(T)",
-          //   divided: true,
-          //   minWidth: 0,
-          //   children: [
-          //     { label: "翻译成简体中文" },
-          //     { label: "翻译成繁体中文" },
-          //   ],
-          // },
-          // {
-          //   label: "截取网页(R)",
-          //   minWidth: 0,
-          //   children: [
-          //     {
-          //       label: "截取可视化区域",
-          //       onClick: () => {
-          //         this.message = "截取可视化区域";
-          //         console.log("截取可视化区域");
-          //       },
-          //     },
-          //     { label: "截取全屏" },
-          //   ],
-          // },
-          // { label: "查看网页源代码(V)", icon: "el-icon-view" },
-          // { label: "检查(N)" },
-        ],
-        event,
-        //x: event.clientX,
-        //y: event.clientY,
-        customClass: "custom-class",
-        zIndex: 3,
-        minWidth: 230,
-      });
-      return false;
-    },
 
-    myDraw() {
-      var myChart = echarts.init(document.getElementById("chart"));
-      // myChart.on("contextmenu", this.onContextmenu);
-      // 控制台打印数据的名称
-      let that = this;
-      myChart.on("contextmenu", function (params) {
-        // console.log(params);
-        setTimeout(() => {
-          that.onContextmenu(params.event.event);
-        }, 0);
-
-        // return true;
-      });
-
+    table_draw() {
+      let legend_data = [];
+      let series_data = [];
+      let title =
+        this.year + "年" + this.month + "月" + this.date + "日" + "温度";
+      for (let i = 0; i < this.temperature_data.sensors.length; i++) {
+        legend_data[i] = this.temperature_data.sensors[i] + "号传感器";
+        series_data[i] = {
+          name: legend_data[i],
+          type: "line",
+          smooth: true,
+          symbol: "none",
+          // areaStyle: {},
+          data: this.temperature_data.values[i],
+        };
+      }
+      var myChart = echarts.init(document.getElementById("temperature"));
+      // 绘制图表
       myChart.setOption({
         title: {
-          text: "无线传感器网络拓扑图",
+          text: title,
         },
-        tooltip: {},
-        animationDurationUpdate: 1500,
-        animationEasingUpdate: "quinticInOut",
-        series: [
-          {
-            type: "graph",
-            layout: "none",
-            symbolSize: 50,
-            roam: true,
-            label: {
-              show: true,
-            },
-            edgeSymbol: ["circle", "arrow"],
-            edgeSymbolSize: [4, 10],
-            edgeLabel: {
-              fontSize: 20,
-            },
-            data: this.node_datas,
-            links: this.node_links,
-            lineStyle: {
-              opacity: 0.9,
-              width: 2,
-              curveness: 0,
+        tooltip: {
+          trigger: "axis",
+        },
+        legend: {
+          data: legend_data,
+        },
+
+        xAxis: {
+          type: "time",
+          boundaryGap: false,
+        },
+        yAxis: {
+          type: "value",
+          boundaryGap: [0, "100%"],
+          min: 0,
+          max: 40,
+          axisLabel: {
+            formatter: function (value) {
+              return value + "℃";
             },
           },
+        },
+        dataZoom: [
+          {
+            type: "inside",
+            start: 0,
+            end: 100,
+          },
+          {
+            start: 0,
+            end: 100,
+          },
         ],
+        series: series_data,
       });
     },
   },
+
   mounted() {
     this.getNodes();
   },
