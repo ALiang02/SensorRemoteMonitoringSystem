@@ -1,8 +1,8 @@
 <template>
   <div class="home">
     <el-menu
-      :default-active="activeIndex2"
       class="el-menu-demo"
+      default-active="/home/map"
       mode="horizontal"
       @select="handleSelect"
     >

@@ -54,7 +54,7 @@ export default {
         if (data.flag) {
           Message.success(data.message);
           sessionStorage.setItem("verification", data.verification);
-          this.$router.push({ path: "/content" });
+          this.$router.push({ path: "/home/map" });
         } else {
           Message.error(data.message);
         }

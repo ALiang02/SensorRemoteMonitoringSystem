@@ -18,14 +18,25 @@ const routes = [
       name: 'Map',
       component: () => import(/* webpackChunkName: "about" */ '../views/Map.vue')
     },   {
-      path: 'data',
-      name: 'Data',
-      component: () => import(/* webpackChunkName: "about" */ '../views/Data.vue')
-    },   {
       path: 'sensor',
       name: 'Sensor',
       component: () => import(/* webpackChunkName: "about" */ '../views/Sensor.vue')
-    },  ]
+    },  {
+      path: 'data',
+      name: 'Data',
+      component: () => import(/* webpackChunkName: "about" */ '../views/Data.vue'),
+      children:[ {
+        path: 'temperature',
+        name: 'Temperature',
+        component: () => import(/* webpackChunkName: "about" */ '../views/Temperature.vue')
+      },   {
+        path: 'humidity',
+        name: 'Humidity',
+        component: () => import(/* webpackChunkName: "about" */ '../views/Humidity.vue')
+      },    ]
+      
+
+    },   ]
     
   },{
     path: '/content',
