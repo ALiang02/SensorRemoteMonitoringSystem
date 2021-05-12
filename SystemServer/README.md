@@ -1,0 +1,4 @@
+`python -m pip install pipenv`
+`pipenv install`
+`pipenv shell`
+`python main.py`
