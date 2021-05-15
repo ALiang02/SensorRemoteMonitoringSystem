@@ -53,6 +53,31 @@ export default {
           symbol: "none",
           // areaStyle: {},
           data: this.temperature_data.values[i],
+          markArea: {
+            itemStyle: {
+              color: "rgba(255, 173, 177, 0.4)",
+            },
+            data: [
+              [
+                {
+                  name: "异常数据",
+                  yAxis: 38,
+                },
+                {
+                  yAxis: Number.POSITIVE_INFINITY,
+                },
+              ],
+              [
+                {
+                  name: "异常数据",
+                  yAxis: 2,
+                },
+                {
+                  yAxis: Number.NEGATIVE_INFINITY,
+                },
+              ],
+            ],
+          },
         };
       }
       var myChart = echarts.init(document.getElementById("temperature"));

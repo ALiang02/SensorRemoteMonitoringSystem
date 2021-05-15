@@ -155,6 +155,11 @@ export default {
           },
         ],
       });
+      myChart.dispatchAction({
+        type: "legendUnSelect",
+        // 图例名称
+        name: "关闭着的",
+      });
     },
   },
   mounted() {
