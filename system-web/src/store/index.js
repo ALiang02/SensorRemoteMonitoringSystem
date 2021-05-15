@@ -5,8 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    sensor_id:"1"
   },
   mutations: {
+    
   },
   actions: {
   },

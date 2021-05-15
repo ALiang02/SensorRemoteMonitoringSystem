@@ -1,7 +1,13 @@
 <template>
   <div class="sensor">
     <h2>传感器状态</h2>
-    <el-table :data="nodes" border highlight-current-row @row-click="getRow">
+    <el-table
+      id="sensor_table"
+      :data="nodes"
+      border
+      highlight-current-row
+      @row-click="getRow"
+    >
       <el-table-column fixed prop="sensor_id" label="编号"> </el-table-column>
       <el-table-column prop="ip" label="ip地址"> </el-table-column>
       <el-table-column prop="gps" label="gps位置"> </el-table-column>
@@ -146,6 +152,7 @@ export default {
             console.log(data);
             if (data.flag) {
               Message.success(data.message);
+              this.getNodes();
             } else {
               Message.error(data.message);
             }
@@ -166,6 +173,7 @@ export default {
       console.log(c);
       this.sensor = { ...row };
       this.raw_sensor = { ...row };
+      this.$route.params.sensor_id = this.sensor.sensor_id;
     },
     getNodes() {
       this.$axios({
@@ -178,11 +186,13 @@ export default {
           value.status = value.status ? true : false;
         });
         console.log(this.nodes);
-        this.sensor = { ...this.nodes[0] };
+
+        this.sensor = { ...this.nodes[this.$store.state.sensor_id - 1] };
       });
     },
   },
   mounted() {
+    console.log(this.sensor_id);
     this.getNodes();
   },
 };

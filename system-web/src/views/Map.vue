@@ -47,19 +47,32 @@ export default {
         }
       });
     },
-    onContextmenu(event) {
+    onContextmenu(event, attr) {
       this.$contextmenu({
         items: [
           {
             label: "查看传感器状态",
             onClick: () => {
               console.log("查看传感器状态");
+              console.log(attr);
+
+              this.$router.push({ path: "/home/sensor" });
             },
           },
           {
-            label: "查看传感器收集的数据",
+            label: "查看湿度",
             onClick: () => {
-              console.log("查看传感器收集的数据");
+              console.log("查看湿度");
+              console.log(attr);
+              this.$router.push({ path: "/home/data/humidity" });
+            },
+          },
+          {
+            label: "查看温度",
+            onClick: () => {
+              console.log("查看温度");
+              console.log(attr);
+              this.$router.push({ path: "/home/data/temperature" });
             },
           },
         ],
@@ -77,7 +90,7 @@ export default {
       var myChart = echarts.init(document.getElementById("chart"));
       let that = this;
       myChart.on("contextmenu", function (params) {
-        // console.log(params);
+        that.$store.state.sensor_id = params.data.sensor_id;
         setTimeout(() => {
           that.onContextmenu(params.event.event);
         }, 0);
