@@ -31,18 +31,27 @@ export default {
           let [x, y] = this.nodes[i].gps.split(",");
           this.nodes[i].pos_x = parseInt(x);
           this.nodes[i].pos_y = parseInt(y);
+          let category = 0;
+          if (this.nodes[i].status) {
+            if (this.nodes[i].energy <= 20) category = 2;
+            else category = 1;
+          }
           this.node_datas[i] = {
             name: "传感器" + this.nodes[i].sensor_id + "号",
             sensor_id: this.nodes[i].sensor_id,
+            data_types: this.nodes[i].data_types,
             x: parseInt(x),
             y: 9 - parseInt(y),
+            category,
           };
+
           for (let j = 0; j < this.nodes[i].neighborhood_nodes.length; j++) {
             this.node_links.push({
               source: "传感器" + this.nodes[i].neighborhood_nodes[j] + "号",
               target: "传感器" + this.nodes[i].sensor_id + "号",
             });
           }
+
           this.myDraw();
         }
       });
@@ -65,7 +74,9 @@ export default {
               console.log("查看湿度");
               console.log(attr);
               this.$router.push({ path: "/home/data/humidity" });
+              this.$store.state.from_node = true;
             },
+            disabled: !attr.data_types.includes("humidity"),
           },
           {
             label: "查看温度",
@@ -73,7 +84,9 @@ export default {
               console.log("查看温度");
               console.log(attr);
               this.$router.push({ path: "/home/data/temperature" });
+              this.$store.state.from_node = true;
             },
+            disabled: !attr.data_types.includes("temperature"),
           },
         ],
         event,
@@ -91,8 +104,9 @@ export default {
       let that = this;
       myChart.on("contextmenu", function (params) {
         that.$store.state.sensor_id = params.data.sensor_id;
+        let attr = params.data;
         setTimeout(() => {
-          that.onContextmenu(params.event.event);
+          that.onContextmenu(params.event.event, attr);
         }, 0);
 
         // return true;
@@ -105,6 +119,7 @@ export default {
         tooltip: {},
         animationDurationUpdate: 1500,
         animationEasingUpdate: "quinticInOut",
+        legend: [{ data: ["关闭着的", "开启着的", "电源不多"] }],
         series: [
           {
             type: "graph",
@@ -119,6 +134,17 @@ export default {
             edgeLabel: {
               fontSize: 20,
             },
+            categories: [
+              {
+                name: "关闭着的",
+              },
+              {
+                name: "开启着的",
+              },
+              {
+                name: "电源不多",
+              },
+            ],
             data: this.node_datas,
             links: this.node_links,
             lineStyle: {

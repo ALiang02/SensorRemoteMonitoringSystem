@@ -5,7 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    sensor_id:"1"
+    sensor_id:"1",
+    from_node: false
   },
   mutations: {
     

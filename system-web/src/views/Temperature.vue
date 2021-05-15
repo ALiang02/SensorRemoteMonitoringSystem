@@ -96,6 +96,27 @@ export default {
         ],
         series: series_data,
       });
+      for (let x of legend_data) {
+        myChart.dispatchAction({
+          type: "legendUnSelect",
+          // 图例名称
+          name: x,
+        });
+      }
+      if (this.$store.state.from_node) {
+        myChart.dispatchAction({
+          type: "legendSelect",
+          // 图例名称
+          name: this.$store.state.sensor_id + "号传感器",
+        });
+      } else {
+        myChart.dispatchAction({
+          type: "legendAllSelect",
+          // 图例名称
+          name: this.$store.state.sensor_id + "号传感器",
+        });
+      }
+      this.$store.state.from_node = false;
     },
   },
 

@@ -25,7 +25,7 @@
             v-for="data_type in scope.row.data_types"
             :key="data_type"
             style="float: left; margin: 0px 5px; cursor: pointer"
-            @click="data_href(data_type)"
+            @click="data_href(data_type, scope.row.sensor_id)"
           >
             {{ data_type }}
           </el-link>
@@ -125,8 +125,11 @@ export default {
     };
   },
   methods: {
-    data_href(target) {
+    data_href(target, sensor_id) {
       // console.log(e);
+      this.$store.state.sensor_id = sensor_id;
+      this.$store.state.from_node = true;
+
       this.$router.push({ path: "/home/data/" + target });
     },
     sensor_update() {
@@ -173,7 +176,7 @@ export default {
       console.log(c);
       this.sensor = { ...row };
       this.raw_sensor = { ...row };
-      this.$route.params.sensor_id = this.sensor.sensor_id;
+      this.$store.state.sensor_id = this.sensor.sensor_id;
     },
     getNodes() {
       this.$axios({
