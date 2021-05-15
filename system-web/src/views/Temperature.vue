@@ -43,8 +43,7 @@ export default {
     table_draw() {
       let legend_data = [];
       let series_data = [];
-      let title =
-        this.year + "年" + this.month + "月" + this.date + "日" + "温度";
+      let title = "温度";
       for (let i = 0; i < this.temperature_data.sensors.length; i++) {
         legend_data[i] = this.temperature_data.sensors[i] + "号传感器";
         series_data[i] = {

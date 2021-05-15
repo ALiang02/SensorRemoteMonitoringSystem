@@ -43,8 +43,7 @@ export default {
     table_draw() {
       let legend_data = [];
       let series_data = [];
-      let title =
-        this.year + "年" + this.month + "月" + this.date + "日" + "温度";
+      let title = "湿度";
       for (let i = 0; i < this.humidity_data.sensors.length; i++) {
         legend_data[i] = this.humidity_data.sensors[i] + "号传感器";
         series_data[i] = {
@@ -80,7 +79,7 @@ export default {
           max: 40,
           axisLabel: {
             formatter: function (value) {
-              return value + "℃";
+              return value + "%";
             },
           },
         },

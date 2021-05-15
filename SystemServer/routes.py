@@ -107,21 +107,26 @@ def update_sensor():
     energy = data["energy"]
     data_types = data["data_types"]
     neighborhood_nodes = data["neighborhood_nodes"]
+    status = data["status"]
+    print(status)
     sql = "SELECT * FROM sensor WHERE sensor_id = '%s'" % sensor_id
     results = execute_sql(sql, "select")
     if results:
+        print(321)
         sql = (
-            "UPDATE sensor SET ip = '%s', gps = '%s', energy = '%s', data_types = '%s', neighborhood_nodes = '%s'  "
-            "Where sensor_id = %d "
-            % (ip, gps, energy, data_types, sensor_id, neighborhood_nodes)
+            "UPDATE sensor SET ip = '%s', gps = '%s', energy = '%s', data_types = '%s', neighborhood_nodes = '%s', "
+            "status = '%s' "
+            "Where sensor_id = %s "
+            % (ip, gps, energy, data_types, neighborhood_nodes, status, sensor_id)
         )
         execute_sql(sql, "update")
         return {"flag": 1, "message": "success!"}
     else:
         sql = (
-            "INSERT INTO sensor (sensor_id,ip,gps,energy,data_types,neighborhood_nodes) VALUES ('%s','%s','%s','%s',"
+            "INSERT INTO sensor (sensor_id,ip,gps,energy,data_types,neighborhood_nodes,status) VALUES ('%s','%s','%s',"
+            "'%s','%s', "
             "'%s','%s') "
-            % (sensor_id, ip, gps, energy, data_types, neighborhood_nodes)
+            % (sensor_id, ip, gps, energy, data_types, neighborhood_nodes, status)
         )
         execute_sql(sql, "insert")
         return {"flag": 1, "message": "success!"}
@@ -136,7 +141,7 @@ def get_sensor_list():
         result = list(result)
         sensor_list.append(
             {"sensor_id": result[0], "ip": result[1], "gps": result[2], "energy": result[3], "data_types": result[4],
-             "neighborhood_nodes": result[5]})
+             "neighborhood_nodes": result[5], "status": result[6]})
     # sql = "SELECT sensor_id FROM sensor WHERE data_types LIKE '%humidity%'"
     # results = execute_sql(sql, "select")
     # print(results[0][0])
@@ -199,9 +204,9 @@ def get_humidity():
         x = []
         for result2 in results2:
             result2 = list(result2)
-            y = str(result2[4]) + "/" + str(result2[5]) + "/" + str(result2[6]) + " " + str(result2[7])+":00:00"
+            y = str(result2[4]) + "/" + str(result2[5]) + "/" + str(result2[6]) + " " + str(result2[7]) + ":00:00"
 
-            x.append([y, result2[2]])
+            x.append([y, result2[3]])
         humidity_data["values"].append(x)
     print
 
@@ -230,7 +235,7 @@ def get_temperature():
         x = []
         for result2 in results2:
             result2 = list(result2)
-            y = str(result2[4]) + "/" + str(result2[5]) + "/" + str(result2[6]) + " " + str(result2[7])+":00:00"
+            y = str(result2[4]) + "/" + str(result2[5]) + "/" + str(result2[6]) + " " + str(result2[7]) + ":00:00"
 
             x.append([y, result2[2]])
         temperature_data["values"].append(x)
