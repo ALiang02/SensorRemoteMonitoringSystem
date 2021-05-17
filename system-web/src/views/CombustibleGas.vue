@@ -1,6 +1,6 @@
 <template>
   <div class="combustibleGas">
-    <div :span="8" id="combustibleGas" style="width: 1200px; height: 900px" />
+    <div id="combustibleGas" style="width: 100%; height: 900px" />
   </div>
 </template>
 

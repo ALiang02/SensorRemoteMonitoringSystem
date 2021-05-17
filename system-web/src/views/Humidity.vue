@@ -1,6 +1,6 @@
 <template>
   <div class="humidity">
-    <div :span="8" id="humidity" style="width: 1200px; height: 900px" />
+    <div id="humidity" style="width: 100%; height: 900px" />
   </div>
 </template>
 

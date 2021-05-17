@@ -1,6 +1,6 @@
 <template>
   <div class="temperature">
-    <div :span="8" id="temperature" style="width: 1200px; height: 900px" />
+    <div id="temperature" style="width: 100%; height: 900px" />
   </div>
 </template>
 

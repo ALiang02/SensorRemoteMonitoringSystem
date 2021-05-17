@@ -1,6 +1,6 @@
 <template>
   <div class="smoke">
-    <div :span="8" id="smoke" style="width: 1200px; height: 900px" />
+    <div id="smoke" style="width: 100%; height: 900px" />
   </div>
 </template>
 
@@ -111,7 +111,7 @@ export default {
         dataZoom: [
           {
             type: "inside",
-            start: 99,
+            start: 98,
             end: 100,
           },
           {
