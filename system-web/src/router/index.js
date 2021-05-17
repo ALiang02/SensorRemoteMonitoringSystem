@@ -33,6 +33,14 @@ const routes = [
         path: 'humidity',
         name: 'Humidity',
         component: () => import(/* webpackChunkName: "about" */ '../views/Humidity.vue')
+      }, {
+        path: 'combustibleGas',
+        name: 'CombustibleGas',
+        component: () => import(/* webpackChunkName: "about" */ '../views/CombustibleGas.vue')
+      }, {
+        path: 'smoke',
+        name: 'Smoke',
+        component: () => import(/* webpackChunkName: "about" */ '../views/Smoke.vue')
       },    ]
       
 

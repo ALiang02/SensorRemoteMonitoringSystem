@@ -3,6 +3,10 @@
     <el-menu class="el-menu-demo" mode="horizontal" @select="handleSelect">
       <el-menu-item index="/home/data/humidity">湿度</el-menu-item>
       <el-menu-item index="/home/data/temperature">温度</el-menu-item>
+      <el-menu-item index="/home/data/combustibleGas">
+        可燃气体浓度
+      </el-menu-item>
+      <el-menu-item index="/home/data/smoke">烟雾浓度</el-menu-item>
     </el-menu>
     <router-view />
   </div>

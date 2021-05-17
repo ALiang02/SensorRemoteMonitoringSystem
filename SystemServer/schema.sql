@@ -9,7 +9,8 @@ CREATE TABLE sensor (
   gps TEXT NOT NULL,
   energy INT NOT NULL,
   data_types TEXT ,
-  neighborhood_nodes TEXT 
+  neighborhood_nodes TEXT ,
+  status INT
 );
 
 CREATE TABLE environment (
@@ -17,6 +18,8 @@ CREATE TABLE environment (
   sensor_id TEXT NOT NULL,
   temperature INT ,
   humidity INT ,
+  combustibleGas INT ,
+  smoke INT ,
   year INT NOT NULL,
   month INT NOT NULL,
   date INT NOT NULL,

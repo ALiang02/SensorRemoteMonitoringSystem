@@ -85,6 +85,8 @@
           <el-checkbox-group v-model="sensor.data_types">
             <el-checkbox label="humidity" name="data_types"></el-checkbox>
             <el-checkbox label="temperature" name="data_types"></el-checkbox>
+            <el-checkbox label="combustibleGas" name="data_types"></el-checkbox>
+            <el-checkbox label="smoke" name="data_types"></el-checkbox>
           </el-checkbox-group>
         </el-form-item>
 
@@ -110,7 +112,7 @@ export default {
         gps: "1,1",
         energy: 50,
         neighborhood_nodes: "3,4",
-        data_types: ["humidity", "temperature"],
+        data_types: ["temperature", "combustibleGas"],
         status: true,
       },
       raw_sensor: {
@@ -119,7 +121,7 @@ export default {
         gps: "1,1",
         energy: 50,
         neighborhood_nodes: "3,4",
-        data_types: ["humidity", "temperature"],
+        data_types: ["temperature", "combustibleGas"],
         status: true,
       },
     };
@@ -219,7 +221,7 @@ export default {
   clear: both;
 }
 
-.box-card {
-  /* width: 480px; */
-}
+/* .box-card {
+  width: 480px;
+} */
 </style>

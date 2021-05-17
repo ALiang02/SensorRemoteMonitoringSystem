@@ -88,6 +88,28 @@ export default {
             },
             disabled: !attr.data_types.includes("temperature"),
           },
+          {
+            label: "查看烟雾浓度",
+            onClick: () => {
+              console.log("查看烟雾浓度");
+              console.log(attr);
+              this.$router.push({
+                path: "/home/data/combustibleGas",
+              });
+              this.$store.state.from_node = true;
+            },
+            disabled: !attr.data_types.includes("combustibleGas"),
+          },
+          {
+            label: "查看可燃气体浓度",
+            onClick: () => {
+              console.log("查看可燃气体浓度");
+              console.log(attr);
+              this.$router.push({ path: "/home/data/smoke" });
+              this.$store.state.from_node = true;
+            },
+            disabled: !attr.data_types.includes("smoke"),
+          },
         ],
         event,
         //x: event.clientX,
