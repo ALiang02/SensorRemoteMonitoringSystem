@@ -3,7 +3,7 @@
     <div
       :span="8"
       id="chart"
-      style="width: 1600px; height: 900px"
+      style="width: 100%; height: 900px"
       @contextmenu.prevent
     ></div>
   </div>
