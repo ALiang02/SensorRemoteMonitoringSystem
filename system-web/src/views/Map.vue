@@ -67,6 +67,7 @@ export default {
 
               this.$router.push({ path: "/home/sensor" });
             },
+            divided: true,
           },
           {
             label: "查看湿度",
@@ -189,3 +190,9 @@ export default {
   },
 };
 </script>
+
+<style >
+.custom-class {
+  height: 180px;
+}
+</style>
