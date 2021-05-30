@@ -22,37 +22,44 @@ export default {
   methods: {
     getNodes() {
       this.$axios({
-        url: "/get_sensor_list",
+        url: "/get_sensor_list", //向服务器发送http请求获得传感器数据
       }).then(({ data }) => {
+        //对data数据进行解析
         console.log(data);
         this.nodes = data.sensor_list;
         console.log(this.nodes);
         for (let i = 0; i < this.nodes.length; i++) {
-          let [x, y] = this.nodes[i].gps.split(",");
+          //对节点进行遍历
+          let [x, y] = this.nodes[i].gps.split(","); //将模拟gps位置提取到x,y中
           this.nodes[i].pos_x = parseInt(x);
           this.nodes[i].pos_y = parseInt(y);
-          let category = 0;
+          let category = 0; //对传感器分类，关闭着的传感器分类为0
           if (this.nodes[i].status) {
             if (this.nodes[i].energy <= 20) category = 2;
+            //剩余能量少的传感器分类为2
             else category = 1;
+            //开启的传感器分类为1
           }
+
           this.node_datas[i] = {
-            name: "传感器" + this.nodes[i].sensor_id + "号",
+            //将传感器数据提取到node_data中供echarts加载
+            name: "传感器" + this.nodes[i].sensor_id + "号", //节点名称
             sensor_id: this.nodes[i].sensor_id,
             data_types: this.nodes[i].data_types,
-            x: parseInt(x),
-            y: 9 - parseInt(y),
-            category,
+            x: parseInt(x), //节点x轴位置
+            y: 9 - parseInt(y), //节点y轴位置
+            category, //节点分类
           };
 
           for (let j = 0; j < this.nodes[i].neighborhood_nodes.length; j++) {
+            //提取传感器节点间的数据交互到node_links供echarts加载
             this.node_links.push({
               source: "传感器" + this.nodes[i].neighborhood_nodes[j] + "号",
               target: "传感器" + this.nodes[i].sensor_id + "号",
             });
           }
 
-          this.myDraw();
+          this.myDraw(); //绘制echarts网络拓扑图
         }
       });
     },
@@ -126,6 +133,7 @@ export default {
       var myChart = echarts.init(document.getElementById("chart"));
       let that = this;
       myChart.on("contextmenu", function (params) {
+        console.log(params);
         that.$store.state.sensor_id = params.data.sensor_id;
         let attr = params.data;
         setTimeout(() => {

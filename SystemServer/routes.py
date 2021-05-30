@@ -89,7 +89,7 @@ def login():
     print(data)
     account = data["account"]
     password = data["password"]
-    sql = "SELECT * FROM identity WHERE account = '%s'" % account
+    sql = "SELECT * FROM admin WHERE account = '%s'" % account
     results = execute_sql(sql, "select")
     if results:
         if results[0][2] == password:

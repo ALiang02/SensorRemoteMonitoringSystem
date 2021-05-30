@@ -136,7 +136,7 @@ export default {
     },
     sensor_update() {
       console.log(this.sensor);
-      MessageBox.confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+      MessageBox.confirm("此操作将修改节点功能, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
@@ -166,7 +166,7 @@ export default {
         .catch(() => {
           Message({
             type: "info",
-            message: "已取消删除",
+            message: "已取消修改",
           });
         });
     },

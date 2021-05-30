@@ -10,15 +10,16 @@
             @select="handleSelect"
           >
             <el-menu-item index="/home/map">
-              <i class="el-icon-document"></i>
+              <i class="el-icon-s-home"></i>
               <span slot="title">网络拓扑图</span>
             </el-menu-item>
             <el-menu-item index="/home/sensor">
-              <i class="el-icon-school"></i>
+              <!-- <i class="el-icon-school"></i> -->
+              <i class="el-icon-s-order"></i>
               <span slot="title">传感器管理</span>
             </el-menu-item>
             <el-menu-item index="/home/data">
-              <i class="el-icon-office-building"></i>
+              <i class="el-icon-s-data"></i>
               <span slot="title">数据一览</span>
             </el-menu-item>
           </el-menu>
@@ -54,7 +55,7 @@
 </template>
 
 <script>
-import { Message } from "element-ui";
+import { Message, MessageBox } from "element-ui";
 export default {
   data() {
     return {
@@ -111,12 +112,10 @@ export default {
     },
     quitSystem() {
       console.log(123);
-      new Promise((resolve, reject) => {
-        if (confirm("您确定要退出系统吗吗？")) {
-          resolve();
-        } else {
-          reject();
-        }
+      MessageBox.confirm("确定退出系统, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
         .then(() => {
           this.$store.commit("verificationGet", "jl");

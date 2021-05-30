@@ -1,6 +1,13 @@
 <template>
   <div class="combustibleGas">
-    <div id="combustibleGas" style="width: 100%; height: 900px" />
+    <el-row type="flex">
+      <el-col :span="16">
+        <div id="combustibleGas" style="width: 100%; height: 900px" />
+      </el-col>
+      <el-col :span="8">
+        <div id="combustibleGas_pie" style="width: 100%; height: 900px" />
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -37,6 +44,86 @@ export default {
         console.log(data.combustibleGas_data);
         this.combustibleGas_data = data.combustibleGas_data;
         this.table_draw();
+        this.pie_draw();
+      });
+    },
+    pie_draw() {
+      var myChart = echarts.init(document.getElementById("combustibleGas_pie"));
+      let pie_data = [
+        {
+          value: 0,
+          name: "异常数据",
+        },
+        {
+          value: 0,
+          name: "2ppm~10ppm",
+        },
+        {
+          value: 0,
+          name: "10ppm~20ppm",
+        },
+        {
+          value: 0,
+          name: "20ppm~30ppm",
+        },
+        {
+          value: 0,
+          name: "30ppm~38ppm",
+        },
+      ];
+      console.log(this.combustibleGas_data.values);
+      for (let i = 0; i < this.combustibleGas_data.values.length; i++) {
+        for (let j = 0; j < this.combustibleGas_data.values[i].length; j++) {
+          let value = this.combustibleGas_data.values[i][j][1];
+          if (value <= 2) {
+            pie_data[0].value++;
+          } else if (value < 10) {
+            pie_data[1].value++;
+          } else if (value < 20) {
+            pie_data[2].value++;
+          } else if (value < 30) {
+            pie_data[3].value++;
+          } else if (value < 38) {
+            pie_data[4].value++;
+          } else {
+            pie_data[0].value++;
+          }
+        }
+      }
+      console.log(pie_data);
+
+      myChart.setOption({
+        title: {
+          text: "数据分析",
+          left: "left",
+        },
+
+        legend: {
+          left: "center",
+        },
+        series: [
+          {
+            name: "访问来源",
+            type: "pie",
+            radius: "50%",
+            // data: [
+            //   { value: 1048, name: "搜索引擎" },
+            //   { value: 735, name: "直接访问" },
+            //   { value: 580, name: "邮件营销" },
+            //   { value: 484, name: "联盟广告" },
+            //   { value: 300, name: "视频广告" },
+            // ],
+
+            data: pie_data,
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: "rgba(0, 0, 0, 0.5)",
+              },
+            },
+          },
+        ],
       });
     },
 
@@ -77,6 +164,15 @@ export default {
                 },
               ],
             ],
+          },
+          markPoint: {
+            data: [
+              { type: "max", name: "最大值" },
+              { type: "min", name: "最小值" },
+            ],
+          },
+          markLine: {
+            data: [{ type: "average", name: "平均值" }],
           },
         };
       }
