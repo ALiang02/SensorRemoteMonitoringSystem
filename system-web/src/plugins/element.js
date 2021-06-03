@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Button , Input,Row,Col,Container,Aside,Main,Tag,Table,TableColumn, Menu, MenuItem , MenuItemGroup, Submenu, Form, FormItem,Checkbox, CheckboxGroup, Radio , RadioGroup, Card,Switch,Link} from 'element-ui'
+import { Button , Input,Row,Col,Container,Aside,Main,Tag,Table,TableColumn, Menu, MenuItem , MenuItemGroup, Submenu, Form, FormItem,Checkbox, CheckboxGroup, Radio , RadioGroup, Card,Switch,Link,Select,Option} from 'element-ui'
 
 
 
@@ -27,3 +27,5 @@ Vue.use(RadioGroup)
 Vue.use(Card)
 Vue.use(Switch)
 Vue.use(Link)
+Vue.use(Select)
+Vue.use(Option)

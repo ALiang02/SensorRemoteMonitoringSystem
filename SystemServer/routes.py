@@ -161,9 +161,11 @@ def insert_environment():
     month = data["month"]
     date = data["date"]
     hour = data["hour"]
+    minute = data["minute"]
     sql = (
-        "INSERT INTO environment (sensor_id,temperature,humidity,combustibleGas,smoke,year, month, date, hour) VALUES ('%s','%s','%s','%s','%s',"
-        "'%s','%s','%s','%s') " % (sensor_id, temperature, humidity, combustibleGas, smoke, year, month, date, hour)
+        "INSERT INTO environment (sensor_id,temperature,humidity,combustibleGas,smoke,year, month, date, hour, minute) VALUES ('%s','%s','%s','%s','%s','%s',"
+        "'%s','%s','%s','%s') " % (
+        sensor_id, temperature, humidity, combustibleGas, smoke, year, month, date, hour, minute)
     )
     execute_sql(sql, "insert")
     return {"flag": 1, "message": "success!"}
@@ -188,9 +190,7 @@ def insert_environment():
 def get_humidity():
     data = json.loads(request.form["data"])
     print(data)
-    year = data["year"]
-    month = data["month"]
-    date = data["date"]
+
     humidity_data = {
         "sensors": [],
         "values": []
@@ -206,7 +206,8 @@ def get_humidity():
         x = []
         for result2 in results2:
             result2 = list(result2)
-            y = str(result2[6]) + "/" + str(result2[7]) + "/" + str(result2[8]) + " " + str(result2[9]) + ":00:00"
+            y = str(result2[6]) + "/" + str(result2[7]) + "/" + str(result2[8]) + " " + str(result2[9]) + ":" + str(
+                result2[10]) + ":00"
 
             x.append([y, result2[3]])
         humidity_data["values"].append(x)
@@ -219,9 +220,6 @@ def get_humidity():
 def get_temperature():
     data = json.loads(request.form["data"])
     print(data)
-    year = data["year"]
-    month = data["month"]
-    date = data["date"]
     temperature_data = {
         "sensors": [],
         "values": []
@@ -237,7 +235,8 @@ def get_temperature():
         x = []
         for result2 in results2:
             result2 = list(result2)
-            y = str(result2[6]) + "/" + str(result2[7]) + "/" + str(result2[8]) + " " + str(result2[9]) + ":00:00"
+            y = str(result2[6]) + "/" + str(result2[7]) + "/" + str(result2[8]) + " " + str(result2[9]) + ":" + str(
+                result2[10]) + ":00"
 
             x.append([y, result2[2]])
         temperature_data["values"].append(x)
@@ -250,9 +249,6 @@ def get_temperature():
 def get_smoke():
     data = json.loads(request.form["data"])
     print(data)
-    year = data["year"]
-    month = data["month"]
-    date = data["date"]
     smoke_data = {
         "sensors": [],
         "values": []
@@ -268,7 +264,8 @@ def get_smoke():
         x = []
         for result2 in results2:
             result2 = list(result2)
-            y = str(result2[6]) + "/" + str(result2[7]) + "/" + str(result2[8]) + " " + str(result2[9]) + ":00:00"
+            y = str(result2[6]) + "/" + str(result2[7]) + "/" + str(result2[8]) + " " + str(result2[9]) + ":" + str(
+                result2[10]) + ":00"
 
             x.append([y, result2[5]])
         smoke_data["values"].append(x)
@@ -281,9 +278,6 @@ def get_smoke():
 def get_combustibleGas():
     data = json.loads(request.form["data"])
     print(data)
-    year = data["year"]
-    month = data["month"]
-    date = data["date"]
     combustibleGas_data = {
         "sensors": [],
         "values": []
@@ -299,7 +293,8 @@ def get_combustibleGas():
         x = []
         for result2 in results2:
             result2 = list(result2)
-            y = str(result2[6]) + "/" + str(result2[7]) + "/" + str(result2[8]) + " " + str(result2[9]) + ":00:00"
+            y = str(result2[6]) + "/" + str(result2[7]) + "/" + str(result2[8]) + " " + str(result2[9]) + ":" + str(
+                result2[10]) + ":00"
 
             x.append([y, result2[4]])
         combustibleGas_data["values"].append(x)
@@ -310,18 +305,19 @@ def get_combustibleGas():
 
 # @app.route("/qwe", methods=["GET"])
 # def qwe():
-#     hour6 = 6 * 3600
+#     hour6 = 60
 #     base = datetime(2021, 1, 1).timestamp()
 #     for i in range(500):
 #         base += hour6
 #         now = datetime.fromtimestamp(base)
 # 
 #         sql = (
-#             "INSERT INTO environment (sensor_id,temperature,combustibleGas,year, month, date, hour) VALUES ('%s','%s','%s','%s','%s',"
+#             "INSERT INTO environment (sensor_id,temperature,combustibleGas,year, month, date, hour,minute) VALUES ('%s','%s','%s','%s','%s','%s',"
 #             "'%s','%s') " % (
 #                 1, random.randint(0, 35), random.randint(0, 35), now.strftime('%Y'), now.strftime('%m'),
 #                 now.strftime('%d'),
-#                 now.strftime('%H'))
+#                 now.strftime('%H'),
+#                 now.strftime('%M'))
 #         )
 #         execute_sql(sql, "insert")
 # 
@@ -331,11 +327,12 @@ def get_combustibleGas():
 #         now = datetime.fromtimestamp(base)
 # 
 #         sql = (
-#             "INSERT INTO environment (sensor_id,temperature,combustibleGas,year, month, date, hour) VALUES ('%s','%s','%s','%s','%s',"
+#             "INSERT INTO environment (sensor_id,temperature,combustibleGas,year, month, date, hour,minute) VALUES ('%s','%s','%s','%s','%s','%s',"
 #             "'%s','%s') " % (
 #                 2, random.randint(0, 35), random.randint(0, 35), now.strftime('%Y'), now.strftime('%m'),
 #                 now.strftime('%d'),
-#                 now.strftime('%H'))
+#                 now.strftime('%H'),
+#                 now.strftime('%M'))
 #         )
 #         execute_sql(sql, "insert")
 # 
@@ -345,11 +342,12 @@ def get_combustibleGas():
 #         now = datetime.fromtimestamp(base)
 # 
 #         sql = (
-#             "INSERT INTO environment (sensor_id,humidity,smoke,year, month, date, hour) VALUES ('%s','%s','%s','%s','%s',"
+#             "INSERT INTO environment (sensor_id,humidity,smoke,year, month, date, hour,minute) VALUES ('%s','%s','%s','%s','%s','%s',"
 #             "'%s','%s') " % (
 #                 3, random.randint(0, 35), random.randint(0, 35), now.strftime('%Y'), now.strftime('%m'),
 #                 now.strftime('%d'),
-#                 now.strftime('%H'))
+#                 now.strftime('%H'),
+#                 now.strftime('%M'))
 #         )
 #         execute_sql(sql, "insert")
 # 
@@ -359,11 +357,12 @@ def get_combustibleGas():
 #         now = datetime.fromtimestamp(base)
 # 
 #         sql = (
-#             "INSERT INTO environment (sensor_id,humidity,smoke,year, month, date, hour) VALUES ('%s','%s','%s','%s','%s',"
+#             "INSERT INTO environment (sensor_id,humidity,smoke,year, month, date, hour,minute) VALUES ('%s','%s','%s','%s','%s','%s',"
 #             "'%s','%s') " % (
 #                 4, random.randint(0, 35), random.randint(0, 35), now.strftime('%Y'), now.strftime('%m'),
 #                 now.strftime('%d'),
-#                 now.strftime('%H'))
+#                 now.strftime('%H'),
+#                 now.strftime('%M'))
 #         )
 #         execute_sql(sql, "insert")
 # 
@@ -373,11 +372,12 @@ def get_combustibleGas():
 #         now = datetime.fromtimestamp(base)
 # 
 #         sql = (
-#             "INSERT INTO environment (sensor_id,temperature,humidity,year, month, date, hour) VALUES ('%s','%s','%s','%s','%s',"
+#             "INSERT INTO environment (sensor_id,temperature,humidity,year, month, date, hour,minute) VALUES ('%s','%s','%s','%s','%s','%s',"
 #             "'%s','%s') " % (
 #                 5, random.randint(0, 35), random.randint(0, 35), now.strftime('%Y'), now.strftime('%m'),
 #                 now.strftime('%d'),
-#                 now.strftime('%H'))
+#                 now.strftime('%H'),
+#                 now.strftime('%M'))
 #         )
 #         execute_sql(sql, "insert")
 # 
@@ -386,14 +386,13 @@ def get_combustibleGas():
 #         base += hour6
 #         now = datetime.fromtimestamp(base)
 #         sql = (
-#             "INSERT INTO environment (sensor_id,temperature,humidity,year, month, date, hour) VALUES ('%s','%s','%s','%s','%s',"
+#             "INSERT INTO environment (sensor_id,temperature,humidity,year, month, date, hour,minute) VALUES ('%s','%s','%s','%s','%s','%s',"
 #             "'%s','%s') " % (
 #                 6, random.randint(0, 35), random.randint(0, 35), now.strftime('%Y'), now.strftime('%m'),
 #                 now.strftime('%d'),
-#                 now.strftime('%H'))
+#                 now.strftime('%H'),
+#                 now.strftime('%M'))
 #         )
 #         execute_sql(sql, "insert")
 # 
 #     return "123"
-
-
