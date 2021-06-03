@@ -178,6 +178,9 @@ export default {
             type: "pie",
             radius: "50%",
             data: this.pie_data,
+            label: {
+              formatter: "{b}({d}%)",
+            },
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,

@@ -9,14 +9,17 @@
       >
       </el-option>
     </el-select> -->
-    <el-row type="flex">
-      <el-col :span="16">
+    <div id="temperature" style="width: 80%; height: 900px" />
+    <br />
+    <div id="temperature_pie" style="width: 100%; height: 900px" />
+    <!-- <el-row type="flex">
+      <el-col>
         <div id="temperature" style="width: 100%; height: 900px" />
       </el-col>
-      <el-col :span="8">
+      <el-col>
         <div id="temperature_pie" style="width: 100%; height: 900px" />
       </el-col>
-    </el-row>
+    </el-row> -->
   </div>
 </template>
 
@@ -175,6 +178,9 @@ export default {
             type: "pie",
             radius: "50%",
             data: this.pie_data,
+            label: {
+              formatter: "{b}({d}%)",
+            },
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
