@@ -4,14 +4,8 @@
       <div class="title">
         <p>管理员登录</p>
       </div>
+      <el-input v-model="account" clearable placeholder="用户名"></el-input>
       <el-input
-        class="myInput"
-        v-model="account"
-        clearable
-        placeholder="用户名"
-      ></el-input>
-      <el-input
-        class="myInput"
         v-model="password"
         clearable
         show-password
@@ -38,7 +32,6 @@ export default {
 
   destroyed() {
     document.body.removeChild(document.querySelector("#bgCanvas"));
-    location.reload();
   },
   data() {
     return {
@@ -200,7 +193,7 @@ export default {
   margin-top: 10px;
 }
 
-.myInput {
+.el-input {
   margin-bottom: 25px;
 }
 
