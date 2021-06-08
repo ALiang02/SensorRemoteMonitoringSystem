@@ -101,6 +101,8 @@ def login():
 def update_sensor():
     data = json.loads(request.form["data"])
     print(data)
+    if request.form["verification"] != "jl":
+        return "error"
     sensor_id = data["sensor_id"]
     ip = data["ip"]
     gps = data["gps"]
@@ -134,6 +136,9 @@ def update_sensor():
 
 @app.route("/get_sensor_list", methods=["POST"])
 def get_sensor_list():
+    print()
+    if request.form["verification"] != "jl":
+        return "error"
     sql = "SELECT * FROM sensor"
     results = execute_sql(sql, "select")
     sensor_list = []
@@ -150,6 +155,8 @@ def get_sensor_list():
 
 @app.route("/insert_environment", methods=["POST"])
 def insert_environment():
+    if request.form["verification"] != "jl":
+        return "error"
     data = json.loads(request.form["data"])
     print(data)
     sensor_id = data["sensor_id"]
@@ -188,6 +195,8 @@ def insert_environment():
 
 @app.route("/get_humidity", methods=["POST"])
 def get_humidity():
+    if request.form["verification"] != "jl":
+        return "error"
     data = json.loads(request.form["data"])
     print(data)
 
@@ -218,6 +227,8 @@ def get_humidity():
 
 @app.route("/get_temperature", methods=["POST"])
 def get_temperature():
+    if request.form["verification"] != "jl":
+        return "error"
     data = json.loads(request.form["data"])
     print(data)
     temperature_data = {
@@ -247,6 +258,8 @@ def get_temperature():
 
 @app.route("/get_smoke", methods=["POST"])
 def get_smoke():
+    if request.form["verification"] != "jl":
+        return "error"
     data = json.loads(request.form["data"])
     print(data)
     smoke_data = {
@@ -276,6 +289,8 @@ def get_smoke():
 
 @app.route("/get_combustibleGas", methods=["POST"])
 def get_combustibleGas():
+    if request.form["verification"] != "jl":
+        return "error"
     data = json.loads(request.form["data"])
     print(data)
     combustibleGas_data = {

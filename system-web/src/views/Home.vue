@@ -4,7 +4,7 @@
       <el-col :span="16">
         <el-row type="flex" justify="start">
           <el-menu
-            default-active="2"
+            default-active="/home/map"
             class="el-menu-vertical-demo menu"
             mode="horizontal"
             @select="handleSelect"
@@ -108,6 +108,7 @@ export default {
 
     handleSelect(index) {
       console.log(index);
+
       this.$router.push({ path: index });
     },
     quitSystem() {

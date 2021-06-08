@@ -18,6 +18,9 @@ if __name__ == '__main__':
         sql = "SELECT * FROM sensor"
         sensors = execute_sql(sql, "select")
         for sensor in sensors:
+            status = sensor[6]
+            if status != 1:
+                continue
             sensor = list(sensor)
             sensor_id = sensor[0]
             data_types = sensor[4]
